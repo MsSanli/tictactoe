@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Cell from "./components/Cell";
 
 const App = () => {
-  const [cells, setCells] = useState(["", "", "", "", "", "", "", "", ""]); // 3x3 board
-  const [go, setGo] = useState("circle"); // circle goes first
+  const [cells, setCells] = useState(["", "", "", "", "", "", "", "", ""]);
+  const [go, setGo] = useState("circle");
   const [winningMessage, setWinningMessage] = useState("");
 
   const message = `It is now ${go}'s turn.`;
 
-  const checkScore = () => {
+  const checkScore = useCallback(() => {
     const winningCombos = [
       [0, 1, 2], [3, 4, 5], [6, 7, 8],
       [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -30,11 +30,11 @@ const App = () => {
         return;
       }
     });
-  };
+  }, [cells]);
 
   useEffect(() => {
     checkScore();
-  }, [cells]);
+  }, [cells, checkScore]);
 
   return (
     <div className="app">
